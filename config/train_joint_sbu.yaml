@@ -1,0 +1,49 @@
+work_dir: ./work_dir/two_man_sbu_test05
+model_saved_name: ./runs/two_man_sbu_test05
+#weights: /home/ubuntu/users/gaofeng/Action_Recognition_Code/myproject/2s-AGCN/runs/two_man_test_v2-11-9804.pt
+# feeder
+feeder: feeders.feeder.Feeder
+dataset: 'SBU'
+train_feeder_args:
+  data_path: /mnt/DataDrive246/gaofeng/Action Recognition Code/two_man_interaction/data/processed_SBU/4_train_data_joint.npy
+  label_path: /mnt/DataDrive246/gaofeng/Action Recognition Code/two_man_interaction/data/processed_SBU/4_train_label.pkl
+  debug: False
+  normalization: True
+
+test_feeder_args:
+  data_path: /mnt/DataDrive246/gaofeng/Action Recognition Code/two_man_interaction/data/processed_SBU/4_val_data_joint.npy
+  label_path: /mnt/DataDrive246/gaofeng/Action Recognition Code/two_man_interaction/data/processed_SBU/4_val_label.pkl
+  normalization: True
+  debug: False
+
+
+# model
+model: model.current_best.Model
+model_args:
+  num_class: 8
+  num_point: 15
+  num_person: 2
+  in_channels: 3
+
+  graph: graph.two_man_graph_sbu.TwoGraphInner
+
+  graph_args:
+    labeling_mode: 'spatial'
+
+
+#optim
+weight_decay: 0.001
+base_lr: 0.01
+step: [270, 350, 380]
+
+# training
+device: [0, 1]
+batch_size: 8
+test_batch_size: 4
+start_epoch: 0
+num_epoch: 400
+nesterov: True
+num_worker: 0
+save_interval: 10
+eval_interval: 10
+#optimizer: SGD
